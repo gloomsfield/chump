@@ -1,21 +1,19 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import <nixpkgs> {}, ... }:
 pkgs.stdenv.mkDerivation {
 	name = "chump";
+	pname = "chump";
 
-	outputs = [ "out" ];
+	outputs = [ "out" "dev" ];
 
 	src = ./src;
 
 	buildPhase = ''
-		mkdir -p build
-		gcc -c $src/chump.c -o build/chump.o
+		mkdir -p $out/lib
+		gcc -c $src/chump.c -o $out/lib/libchump.a
 	'';
 
 	installPhase = ''
-		mkdir -p $out/lib
-		cp build/chump.o $out/lib
-
-		mkdir -p $out/include
-		cp -r $src/chump.h $out/include
-	'';
+		mkdir -p $dev/include
+		cp $src/chump.h $dev/include
+	'';	
 }
