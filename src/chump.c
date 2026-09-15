@@ -2,9 +2,18 @@
 
 #include <stdint.h>
 
+#ifndef CHUMP_CAPACITY
+#define CHUMP_CAPACITY 8
+#endif
+
+#define STRINGIFY_INNER(VALUE) #VALUE
+#define STRINGIFY(VALUE) STRINGIFY_INNER(VALUE)
+
 #define CHUMP_STATUS(CHOOSE_FUNC) \
 	CHOOSE_FUNC(SUCCESS = CHUMP_SUCCESS, "chump - success") \
 	CHOOSE_FUNC(FAILURE = CHUMP_FAILURE, "chump - generic failure") \
+	CHOOSE_FUNC(BUFFER_CAPACITY_MISALIGNED, "chump - invalid buffer capacity during hibuf creation, please ensure it is a multiple of " STRINGIFY(CHUMP_CAPACITY)) \
+	CHOOSE_FUNC(HANDLE_CAPACITY_MISALIGNED, "chump - invalid handle capacity during hibuf creation, please ensure it is a multiple of " STRINGIFY(CHUMP_CAPACITY)) \
 
 #define CHUMP_CHOOSE_ENUM(ENUM, STRING) ENUM,
 #define CHUMP_CHOOSE_STRING(ENUM, STRING) STRING,
