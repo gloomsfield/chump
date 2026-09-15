@@ -93,7 +93,13 @@ const uint32_t chump_create_creation_info(
 	return total;
 }
 
-uint32_t advance_index(uint32_t* index, uint32_t amount);
+uint32_t advance_index(uint32_t* index, uint32_t amount) {
+	uint32_t old_index = *index;
+
+	*index += amount;
+
+	return old_index;
+}
 
 chump_status_t chump_hibuf_create(chump_hibuf_creation_info_t info, void* buffer, chump_hibuf_t** hibuf) {
 	if(!hibuf) { return NULL_HIBUF_PTR; }
