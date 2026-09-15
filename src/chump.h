@@ -2,8 +2,8 @@
 
 #include <stdint.h>
 
-#define CHUMP_FAILURE (0)
-#define CHUMP_SUCCESS (1)
+#define CHUMP_SUCCESS (0)
+#define CHUMP_FAILURE (1)
 
 typedef enum chump_status_t chump_status_t;
 
