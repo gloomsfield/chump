@@ -11,18 +11,18 @@ typedef struct chump_handle_t chump_handle_t;
 
 typedef struct chump_hibuf_t chump_hibuf_t;
 
-typedef struct chump_hibuf_creation_info_t {
-	uint32_t capacity;
-	uint32_t element_size;
-	void* element_buffer;
-
-	uint32_t handle_capacity;
-	chump_handle_t** handle_buffer;
-} chump_hibuf_creation_info_t;
+typedef struct chump_hibuf_creation_info_t chump_hibuf_creation_info_t;
 
 const char* chump_get_status_string(chump_status_t status);
 
-chump_status_t chump_hibuf_create(chump_hibuf_creation_info_t info, chump_hibuf_t* chump);
+const uint32_t chump_create_creation_info(
+	uint32_t element_capacity,
+	uint32_t element_size,
+	uint32_t handle_capacity,
+	chump_hibuf_creation_info_t* result
+);
+
+chump_status_t chump_hibuf_create(chump_hibuf_creation_info_t info, void* buffer, chump_hibuf_t** hibuf);
 chump_status_t chump_hibuf_destroy(chump_hibuf_t* chump);
 
 chump_status_t chump_occupy(chump_hibuf_t* chump, void* data, chump_handle_t* handle);
