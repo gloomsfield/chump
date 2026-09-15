@@ -1,10 +1,32 @@
 #pragma once
 
+#include <stdint.h>
+
 #define CHUMP_FAILURE (0)
 #define CHUMP_SUCCESS (1)
 
-typedef struct chump_t chump_t;
-
 typedef enum chump_status_t chump_status_t;
 
+typedef struct chump_handle_t chump_handle_t;
+
+typedef struct chump_hibuf_t chump_hibuf_t;
+
+typedef struct chump_hibuf_creation_info_t {
+	uint32_t capacity;
+	uint32_t element_size;
+	void* element_buffer;
+
+	uint32_t handle_capacity;
+	chump_handle_t** handle_buffer;
+} chump_hibuf_creation_info_t;
+
 const char* chump_get_status_string(chump_status_t status);
+
+chump_status_t chump_hibuf_create(chump_hibuf_creation_info_t info, chump_hibuf_t* chump);
+chump_status_t chump_hibuf_destroy(chump_hibuf_t* chump);
+
+chump_status_t chump_occupy(chump_hibuf_t* chump, void* data, chump_handle_t* handle);
+chump_status_t chump_vacate(chump_hibuf_t* chump, chump_handle_t* handle);
+
+chump_status_t chump_get(chump_hibuf_t* chump, chump_handle_t* handle, void* result);
+chump_status_t chump_set(chump_hibuf_t* chump, chump_handle_t* handle, void* value);
