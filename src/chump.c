@@ -73,8 +73,14 @@ const uint32_t chump_create_creation_info(
 	// size of the element buffer
 	total += chump_capacity * CHUMP_SLOT_COUNT * element_size;
 
+	// size of the element chumps
+	total += chump_capacity * sizeof(chump_t);
+
 	// size of the handle buffer
 	total += handle_capacity * sizeof(chump_handle_t);
+
+	// size of the handle chumps
+	total += handle_capacity * sizeof(chump_t);
 
 	// size of the offset buffer
 	total += chump_capacity * sizeof(offset_t);
@@ -91,6 +97,16 @@ const uint32_t chump_create_creation_info(
 	};
 
 	return total;
+}
+
+void initialize_element_chumps(chump_hibuf_creation_info_t info, uint32_t* index_into_buffer, void* buffer, chump_hibuf_t* hibuf) {
+	for(int i = 0; i < info.chump_capacity; i++) {
+		chump_t new_chump = { .occupied_slot_count = 0, .data = ??? };
+
+		memcpy(&(buffer[*index_into_buffer]), &new_chump, sizeof(chump_t));
+
+		*index_into_buffer += sizeof(chump_t);
+	}
 }
 
 uint32_t advance_index(uint32_t* index, uint32_t amount) {
@@ -111,6 +127,8 @@ chump_status_t chump_hibuf_create(chump_hibuf_creation_info_t info, void* buffer
 
 	(*hibuf)->chump_capacity = info.chump_capacity;
 	(*hibuf)->element_chumps = &(buffer[advance_index(&index_into_buffer, sizeof(chump_t) * info.chump_capacity)]);
+	(*hibuf)->handle_chumps = &(buffer[advance_index(&index_into_buffer, sizeof(chump_handle_t) * info.handle_capacity)]);
+	(*hibuf)->offsets = &(buffer[advance_index(&index_into_buffer, sizeof(offset_t) * info.chump_capacity)]);
 
 	return SUCCESS;
 }
